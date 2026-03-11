@@ -1,0 +1,50 @@
+:root {
+    --color-text:#1F2937;
+    --color-border: #E5E7EB;
+    --color-bg:#F59E0B;
+    --color-primary: #219ebc;
+    --color-success:#2cb62c;
+    --color-error:#ce3216;
+    --color-hover:#8B5CF6;
+}
+
+* {
+    font-family: 'Roboto Mono', monospace;
+}
+body {
+    background-color:#fdfae7;
+    margin:0;
+}
+main {
+    flex:1;
+}
+.app-container {
+    color:  var(--color-text);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    & h1{
+    font-size: 50px;
+    margin: 20px;
+    }
+    & a {
+    text-decoration: none;
+    color:  var(--color-text);
+    } 
+}
+
+footer {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0;
+    & .footer-container {
+    p {
+        font-size:12px;
+        margin: 0;
+    }
+}
+}
+
+
+
