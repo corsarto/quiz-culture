@@ -7,3 +7,12 @@ export type EndScreenProps = {
     numberOfQuestions: number;
     quizEnded: boolean;
 }
+
+export type QuizType = {
+    id: string;
+    question: string;
+    answer: string;
+    badAnswers: string[];
+    category: string;
+    difficulty: string;
+}

@@ -14,7 +14,7 @@ export default function Question ({ numberOfQuestions }: QuestionProps) {
     const [score, setScore] = useState(0);
     const [quizEnded, setQuizEnded] = useState(false);
     const maxIndex = numberOfQuestions - 1;
-
+    
     return (
     <div className='question-container'>
       <div className='question-card'>
