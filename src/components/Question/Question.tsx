@@ -1,31 +1,45 @@
 import { useState } from 'react';
-import { QuestionList } from '../../../data.json';
 import './question.scss';
 import EndScreen from '../../components/EndScreen/EndScreen';
 import type { QuestionProps }  from '../../types/index';
+import { useQuery } from '@tanstack/react-query'
 
-
+const fetchQuiz = async () => {
+const res = await fetch('https://quizzapi.jomoreschi.fr/api/v2/quiz')
+  if (!res.ok) throw new Error('Erreur API')
+  return res.json();
+}
 export default function Question ({ numberOfQuestions }: QuestionProps) {
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const question = QuestionList[currentIndex];
-    const [selectedAnswer, setSelectedAnswer] = useState('');
-    const feedbackMessage = selectedAnswer === question.CorrectAnswer ? 'Bonne réponse!' : 'Mauvaise réponse.';
-    const [isValidated, setIsValidated] = useState(false);
-    const [score, setScore] = useState(0);
-    const [quizEnded, setQuizEnded] = useState(false);
-    const maxIndex = numberOfQuestions - 1;
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['quiz'],
+    queryFn: fetchQuiz
+})
+  const [isValidated, setIsValidated] = useState(false);
+  const [score, setScore] = useState(0);
+  const [quizEnded, setQuizEnded] = useState(false);
+  const [selectedAnswer, setSelectedAnswer] = useState('');
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  if (isLoading) return <p>Chargement...</p>
+  if (error) return <p>Erreur : {error.message}</p>
+
+  const quiz = data.quizzes[currentIndex];
+  const feedbackMessage = selectedAnswer === quiz.answer ? 'Bonne réponse!' : 'Mauvaise réponse.';
+  const maxIndex = Math.min(numberOfQuestions, data.quizzes.length) -1;
+  const answers = [quiz.answer, ...quiz.badAnswers];
     
+ 
     return (
     <div className='question-container'>
       <div className='question-card'>
-        <h2 className="question-text" >Question {question.QuestionId}: {question.Question}</h2>
+        <h2 className="question-text" >Question: {quiz.question}</h2>
       </div>
       <ul className={`answer-option`}>
-        {question.Answer.map((answer, index) => (
+        {answers.map((answer, index) => (
           <li key={index}
               className={
                 isValidated 
-                ? answer === question.CorrectAnswer
+                ? answer === quiz.answer
                 ? 'validated' 
                 : (selectedAnswer === answer ? 'invalidated' : '') 
                 : (selectedAnswer === answer ? 'selected' : '') 
@@ -55,7 +69,7 @@ export default function Question ({ numberOfQuestions }: QuestionProps) {
         >Next Question</button>
         <button className='validate-btn' onClick={() => { 
           setIsValidated(true);
-          if (selectedAnswer === question.CorrectAnswer) {
+          if (selectedAnswer === quiz.answer) {
           setScore(score + 1);
           }
           if (currentIndex >= maxIndex) {

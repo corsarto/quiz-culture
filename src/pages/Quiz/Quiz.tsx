@@ -1,12 +1,10 @@
 import Question from '../../components/Question/Question';
 import { Navigate, useParams } from 'react-router-dom';
-import { QuestionList } from '../../../data.json';
+
 
 export default function Quiz() {
     const { numberOfQuestions } = useParams();
-    const requestAmount = Number(numberOfQuestions);
-    const maxQuestions = QuestionList.length;
-    const amount = Math.min(requestAmount, maxQuestions);
+    const amount = Number(numberOfQuestions);
     
     if (isNaN(amount) || amount <= 0) {
         return <Navigate to='/404' />;
