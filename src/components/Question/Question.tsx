@@ -1,14 +1,15 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import './question.scss';
 import EndScreen from '../../components/EndScreen/EndScreen';
 import type { QuestionProps }  from '../../types/index';
 import { useQuery } from '@tanstack/react-query'
 
 const fetchQuiz = async () => {
-const res = await fetch('https://quizzapi.jomoreschi.fr/api/v2/quiz')
-  if (!res.ok) throw new Error('Erreur API')
-  return res.json();
-}
+    const res = await fetch('https://quizzapi.jomoreschi.fr/api/v2/quiz');
+    if (!res.ok) throw new Error('Erreur API');
+    return res.json();
+  };
+
 export default function Question ({ numberOfQuestions }: QuestionProps) {
   const { data, isLoading, error } = useQuery({
     queryKey: ['quiz'],
@@ -20,23 +21,41 @@ export default function Question ({ numberOfQuestions }: QuestionProps) {
   const [selectedAnswer, setSelectedAnswer] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
 
+   const quiz = data?.quizzes[currentIndex];
+
+//   const [shuffledAnswers, setShuffledAnswers] = useState<string[]>([]);
+
+//  useEffect(() => { 
+//     if (!data) return;
+
+//      const quiz = data.quizzes[currentIndex];
+
+//     if (!quiz) return;
+    
+//     const answers =[quiz.answer, ...quiz.badAnswers]; 
+//     setShuffledAnswers( [...answers].sort(() => Math.random() - 0.5)); 
+//      }, [data, currentIndex]);
+
+const shuffledAnswers = useMemo(() => {
+  if (!quiz) return [];
+  const answers = [quiz.answer, ...quiz.badAnswers];
+  return [...answers].sort(() => Math.random() - 0.5);
+}, [quiz]);
+
   if (isLoading) return <p>Chargement...</p>
   if (error) return <p>Erreur : {error.message}</p>
-
-  const quiz = data.quizzes[currentIndex];
+  
   const feedbackMessage = selectedAnswer === quiz.answer ? 'Bonne réponse!' : 'Mauvaise réponse.';
   const maxIndex = Math.min(numberOfQuestions, data.quizzes.length) -1;
-  const answers = [quiz.answer, ...quiz.badAnswers];
-    
  
     return (
     <div className='question-container'>
       <div className='question-card'>
-        <h2 className="question-text" >Question: {quiz.question}</h2>
+        <h2 className='question-text' >Question: {quiz.question}</h2>
       </div>
       <ul className={`answer-option`}>
-        {answers.map((answer, index) => (
-          <li key={index}
+        {shuffledAnswers.map((answer, i) => (
+          <li key={i}
               className={
                 isValidated 
                 ? answer === quiz.answer
