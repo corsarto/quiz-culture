@@ -1,10 +1,12 @@
 export type QuestionProps = {
-    numberOfQuestions: number;
+    selectedQuestions: number;
+    category: string;
+    difficulty: string;
 }
 
 export type EndScreenProps = {
     score: number;
-    numberOfQuestions: number;
+    selectedQuestions: number;
     quizEnded: boolean;
 }
 

@@ -3,13 +3,13 @@ import type { EndScreenProps } from '../../types/index';
 import './endscreen.scss';
 
 
-export default function EndScreen({ score, numberOfQuestions, quizEnded }: EndScreenProps) {
+export default function EndScreen({ score, selectedQuestions, quizEnded }: EndScreenProps) {
     if (!quizEnded) return null;
-     const endMessage = `Quiz terminé! Votre score final est de ${score} / ${numberOfQuestions}.`;
+     const endMessage = `Quiz terminé! Votre score final est de ${score} / ${selectedQuestions}.`;
     return (
         <div className='modal-overlay'>
             <div className='modal-end-screen'>
-                {score >= numberOfQuestions / 2 ? (
+                {score >= selectedQuestions / 2 ? (
                     <p>Félicitations !</p>
                 ) : (
                     <p>Essaie encore !</p>

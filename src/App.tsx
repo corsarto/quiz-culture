@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import Quiz from './pages/Quiz/Quiz'
 import Home from './pages/Home/Home'
 import Error from './pages/Error/Error'
-// import TestApi from './API/testApi'
 import './styles/main.scss'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
@@ -21,7 +20,7 @@ export default function App() {
          <main>
            <Routes>
              <Route path="/" element={<Home />} />
-             <Route path='/quiz/:numberOfQuestions' element={<Quiz />} />
+             <Route path='/quiz/:selectedQuestions' element={<Quiz />} />
              <Route path='*' element={<Error />} />
            </Routes>
          </main>

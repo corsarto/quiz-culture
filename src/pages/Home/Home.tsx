@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom'
 import './home.scss'
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function Home() {
     
@@ -29,6 +29,8 @@ export default function Home() {
     ];
     
     const [selectedQuestions, setSelectedQuestions] = useState('');
+
+    const navigate = useNavigate();
 
     return (
         <div>
@@ -72,10 +74,13 @@ export default function Home() {
                         ))}
                     </select>
                 </div>
-                <Link to={`/quiz/${selectedQuestions}?category=${selectedCategory}&difficulty=${selectedDifficulty}`}>
-                    <button>Lancer le quiz</button>
-                </Link>
-            </div>
+                    <button
+                        disabled={!selectedQuestions || !selectedCategory || !selectedDifficulty}
+                        onClick={() => navigate(`/quiz/${selectedQuestions}?category=${selectedCategory}&difficulty=${selectedDifficulty}`)}
+                    >
+                        Lancer le quiz
+                    </button>
+                </div>
         </div>    
     )
 }
