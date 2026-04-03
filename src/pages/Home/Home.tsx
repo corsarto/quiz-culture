@@ -28,51 +28,96 @@ export default function Home() {
         {label: 'Difficile', value: 'difficile'},
     ];
     
-    const [selectedQuestions, setSelectedQuestions] = useState('');
+    const [selectedQuestions, setSelectedQuestions] = useState<number>(0);
 
     const navigate = useNavigate();
 
     return (
         <div>
-            <h2>Bienvenue sur Quiz Culture !</h2>
+            <h2>Bienvenue sur GQuiz !</h2>
             <div className='quiz-container'>
                 <h3>Veuillez séléctionner un quiz </h3>
                 <div className='questions-container'>
                     <p>Séléctionner le nombre de questions :</p>
-                    <select 
-                    value={selectedQuestions} 
-                    onChange={(e) => setSelectedQuestions(e.target.value)}>
-                        <option value="">--Choisir le nombre de questions--</option>
-                        <option value="5">5 questions</option>
-                        <option value="10">10 questions</option>
-                        <option value="15">15 questions</option>
-                    </select>
-                </div>
-                <div className='categories-container'>
-                    <p>Séléctionner une catégorie :</p>
-                    <select 
-                    value={selectedCategory} 
-                    onChange={(e) => setSelectedCategory(e.target.value)}>
-                        <option value="">--Choisir une catégorie--</option>
-                        {categories.map((category, i) => (
-                            <option key={i} value={category.value}>
-                                {category.label}
-                            </option>
-                        ))}
-                    </select>
+                    <ul className='questions-container-card'>
+                        <li className={`question-card-home ${selectedQuestions === 5 ? 'active' : ''}`}>
+                            <label htmlFor='q5'>
+                                <input
+                                    type='radio'
+                                    name='question-card-home'
+                                    value= { 5 }
+                                    checked={selectedQuestions === 5}
+                                    onChange= {() => setSelectedQuestions(5)}
+                                    
+                                />
+                                5 questions
+                            </label>
+                        </li>
+                        <li className={`question-card-home ${selectedQuestions === 10 ? 'active' : ''}`}>
+                            <label htmlFor='q10'>
+                                <input
+                                    type='radio'
+                                    name='question-card-home'
+                                    value= { 10 }
+                                    checked={selectedQuestions === 10}
+                                    onChange= {() => setSelectedQuestions(10)}
+                                />
+                                10 questions
+                            </label>
+                        </li>
+                        <li className={`question-card-home ${selectedQuestions === 15 ? 'active' : ''}`}>
+                            <label htmlFor='q15'>
+                                <input
+                                    type='radio'
+                                    name='question-card-home'
+                                    value= { 15 }
+                                    checked={selectedQuestions === 15}
+                                    onChange= {() => setSelectedQuestions(15)}
+                                />
+                                15 questions
+                            </label>
+                        </li>
+                    </ul>
                 </div>
                 <div className='difficulties-container'>
                     <p>Séléctionner une difficulté : </p>
-                    <select 
-                    value={selectedDifficulty} 
-                    onChange={(e) => setSelectedDifficulty(e.target.value)}>
-                        <option value="">--Choisir une difficulté--</option>
+                    <ul className='difficulty-container'>
                         {difficulties.map((difficulty, i) => (
-                            <option key={i} value={difficulty.value}>
-                                {difficulty.label}
-                            </option>
+                            <li key={i}
+                                className={selectedDifficulty === difficulty.value ? 'selected' : ''}>
+                                <label>
+                                    <input 
+                                        type='radio'
+                                        name='difficulty'
+                                        value={difficulty.value}
+                                        checked={selectedDifficulty === difficulty.value}
+                                        onChange= {() => setSelectedDifficulty(difficulty.value)}
+                                    />
+                                    {difficulty.label}
+                                </label>
+                            </li>
                         ))}
-                    </select>
+                    </ul>
+                </div>
+                <div className='categories-container'>
+                    <p>Séléctionner une catégorie :</p>
+                    <ul className='category-container'>
+                        {categories.map((category, i) => (
+                            <li key={i}
+                                className={selectedCategory === category.value ? 'selected' : ''}>
+                                <label>
+                                    <input 
+                                        type='radio'
+                                        name='category'
+                                        value={category.value}
+                                        checked={selectedCategory === category.value}
+                                        onChange= {() => setSelectedCategory(category.value)}
+                                    />
+                                    {category.label}
+                                </label>
+                            </li>
+                        ))}
+                    </ul>
                 </div>
                     <button
                         disabled={!selectedQuestions || !selectedCategory || !selectedDifficulty}
@@ -84,3 +129,4 @@ export default function Home() {
         </div>    
     )
 }
+

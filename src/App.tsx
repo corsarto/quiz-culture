@@ -15,7 +15,7 @@ export default function App() {
      <Router>
        <div className='app-container'>
          <header> 
-           <h1><Link to="/">Quiz Culture</Link></h1>
+           <h1><Link to="/">GQuiz</Link></h1>
          </header>
          <main>
            <Routes>

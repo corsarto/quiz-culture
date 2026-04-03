@@ -57,8 +57,6 @@ export default function Question ({ selectedQuestions, category, difficulty }: Q
       <div className='question-card'>
         <h2 className='question-text' >Question: {quiz.question}</h2>
       </div>
-      <p>Difficulté: {quiz.difficulty}</p>
-      <p>Catégories: {quiz.category}</p>
       <ul className={`answer-option`}>
         {shuffledAnswers.map((answer, i) => (
           <li key={i}
@@ -69,18 +67,18 @@ export default function Question ({ selectedQuestions, category, difficulty }: Q
                 : (selectedAnswer === answer ? 'invalidated' : '') 
                 : (selectedAnswer === answer ? 'selected' : '') 
               }
-              onClick={() => !isValidated && setSelectedAnswer(answer)}>
+              >
             <label>
               <input 
                 type="radio" 
                 name="answer" 
                 value={answer}
                 checked={selectedAnswer === answer}
-                readOnly
+                onChange={() => !isValidated && setSelectedAnswer(answer)}
               />
               {answer} 
             </label>
-            </li>
+          </li>
         ))}
       </ul>
       <div className='btn-container'>
