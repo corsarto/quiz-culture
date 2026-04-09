@@ -29,6 +29,8 @@ export default function Home() {
     ];
     
     const [selectedQuestions, setSelectedQuestions] = useState<number>(0);
+    const questionsOptions = [5, 10, 15];
+    
 
     const navigate = useNavigate();
 
@@ -37,94 +39,76 @@ export default function Home() {
             <h2>Bienvenue sur GQuiz !</h2>
             <div className='quiz-container'>
                 <h3>Veuillez séléctionner un quiz </h3>
-                <div className='questions-container'>
-                    <p>Séléctionner le nombre de questions :</p>
-                    <ul className='questions-container-card'>
-                        <li className={`question-card-home ${selectedQuestions === 5 ? 'active' : ''}`}>
-                            <label htmlFor='q5'>
-                                <input
-                                    type='radio'
-                                    name='question-card-home'
-                                    value= { 5 }
-                                    checked={selectedQuestions === 5}
-                                    onChange= {() => setSelectedQuestions(5)}
-                                    
-                                />
-                                5 questions
-                            </label>
-                        </li>
-                        <li className={`question-card-home ${selectedQuestions === 10 ? 'active' : ''}`}>
-                            <label htmlFor='q10'>
-                                <input
-                                    type='radio'
-                                    name='question-card-home'
-                                    value= { 10 }
-                                    checked={selectedQuestions === 10}
-                                    onChange= {() => setSelectedQuestions(10)}
-                                />
-                                10 questions
-                            </label>
-                        </li>
-                        <li className={`question-card-home ${selectedQuestions === 15 ? 'active' : ''}`}>
-                            <label htmlFor='q15'>
-                                <input
-                                    type='radio'
-                                    name='question-card-home'
-                                    value= { 15 }
-                                    checked={selectedQuestions === 15}
-                                    onChange= {() => setSelectedQuestions(15)}
-                                />
-                                15 questions
-                            </label>
-                        </li>
-                    </ul>
-                </div>
-                <div className='difficulties-container'>
-                    <p>Séléctionner une difficulté : </p>
-                    <ul className='difficulty-container'>
-                        {difficulties.map((difficulty, i) => (
-                            <li key={i}
-                                className={selectedDifficulty === difficulty.value ? 'selected' : ''}>
-                                <label>
-                                    <input 
-                                        type='radio'
-                                        name='difficulty'
-                                        value={difficulty.value}
-                                        checked={selectedDifficulty === difficulty.value}
-                                        onChange= {() => setSelectedDifficulty(difficulty.value)}
-                                    />
-                                    {difficulty.label}
-                                </label>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-                <div className='categories-container'>
-                    <p>Séléctionner une catégorie :</p>
-                    <ul className='category-container'>
-                        {categories.map((category, i) => (
-                            <li key={i}
-                                className={selectedCategory === category.value ? 'selected' : ''}>
-                                <label>
-                                    <input 
-                                        type='radio'
-                                        name='category'
-                                        value={category.value}
-                                        checked={selectedCategory === category.value}
-                                        onChange= {() => setSelectedCategory(category.value)}
-                                    />
-                                    {category.label}
-                                </label>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-                    <button
-                        disabled={!selectedQuestions || !selectedCategory || !selectedDifficulty}
-                        onClick={() => navigate(`/quiz/${selectedQuestions}?category=${selectedCategory}&difficulty=${selectedDifficulty}`)}
-                    >
-                        Lancer le quiz
-                    </button>
+                <div className='choice-container'>
+                    <div className='questions-container'>
+                        <p>Séléctionner le nombre de questions :</p>
+                        <ul className='questions-container-card'>
+                            {questionsOptions.map((q, i) => (
+                                <li 
+                                    key={i}
+                                    className={`question-card-home ${selectedQuestions === q ? 'selected' : ''}`}
+                                >
+                                    <label>
+                                        <input 
+                                            type='radio'
+                                            name='question-card-home'
+                                            value={q}
+                                            checked={selectedQuestions === q}
+                                            onChange={() => setSelectedQuestions(q)}
+                                        />
+                                        {q} questions
+                                    </label>
+                                </li>   
+                            ))}
+                        </ul>
+                    </div>
+                    <div className='difficulties-container'>
+                        <p>Séléctionner une difficulté : </p>
+                        <ul className='difficulty-container'>
+                            {difficulties.map((difficulty, i) => (
+                                <li key={i}
+                                    className={`difficulty-card-home ${selectedDifficulty === difficulty.value ? 'selected' : ''}`}>
+                                    <label>
+                                        <input 
+                                            type='radio'
+                                            name='difficulty'
+                                            value={difficulty.value}
+                                            checked={selectedDifficulty === difficulty.value}
+                                            onChange= {() => setSelectedDifficulty(difficulty.value)}
+                                        />
+                                        {difficulty.label}
+                                    </label>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                    <div className='categories-container'>
+                        <p>Séléctionner une catégorie :</p>
+                        <ul className='category-container'>
+                            {categories.map((category, i) => (
+                                <li key={i}
+                                    className={`category-card-home ${selectedCategory === category.value ? 'selected' : ''}`}>
+                                    <label>
+                                        <input 
+                                            type='radio'
+                                            name='category'
+                                            value={category.value}
+                                            checked={selectedCategory === category.value}
+                                            onChange= {() => setSelectedCategory(category.value)}
+                                        />
+                                        {category.label}
+                                    </label>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                        <button
+                            disabled={!selectedQuestions || !selectedCategory || !selectedDifficulty}
+                            onClick={() => navigate(`/quiz/${selectedQuestions}?category=${selectedCategory}&difficulty=${selectedDifficulty}`)}
+                        >
+                            Lancer le quiz
+                        </button>
+                    </div>
                 </div>
         </div>    
     )
