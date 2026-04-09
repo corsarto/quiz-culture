@@ -94,3 +94,43 @@
         box-shadow: 10px 5px 5px grey;
     }
 }
+
+@media (max-width:640px) {
+    .question-card{ 
+        & h2{
+            font-size: 18px;
+        }
+    }
+    .answer-option{
+        margin:10px;
+        display: flex;
+        flex-direction: column;
+        gap:20px;
+        & label {
+            font-size:14px;
+        }
+        &:hover{
+            background-color: none;
+        }
+        & li {
+            margin:0;
+            padding: 10px;
+        }
+    }
+    .btn-container{
+        gap:10px;
+        margin:10px;
+        & button {
+            font-size:14px;
+            padding: 10px;
+        }
+    }
+    .container-msg {
+        width:80%;
+        padding: 10px 0;
+        margin:20px;
+        & p{
+            font-size: 14px;
+        }
+    }
+}

@@ -47,5 +47,15 @@ footer {
 }
 }
 
+@media (max-width:640px) {
+.app-container h1 {
+    font-size:36px;
+    margin:15px;
+}
+
+footer .footer-container p{
+    font-size: 8px;
+}
+}
 
 

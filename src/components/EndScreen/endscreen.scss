@@ -19,7 +19,7 @@
   flex-direction: column;
   align-items: center;
   width: 70%;
-  height: 32%;
+  height: 35%;
   & button {
     background-color:var(--color-primary);
     color: white; 
@@ -30,4 +30,20 @@
     cursor:pointer;
     box-shadow: 10px 5px 5px var(--color-primary);
   }
+}
+
+@media (max-width:640px) {
+  .modal-end-screen{
+    display:flex;
+    justify-content: center;
+    gap:20px;
+    padding:20px 30px;
+  & p{
+    text-align: center;
+    font-size: 14px;
+  }
+  & button{
+    font-size:14px;
+  }
+}
 }

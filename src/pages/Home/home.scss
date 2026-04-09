@@ -62,7 +62,6 @@ input {
             height:100%;
             width:100%;
             cursor:pointer;
-            padding:40px;
         }
         &:hover{
         transform: scale(1.1);
@@ -76,6 +75,10 @@ input {
     place-items: center;
     gap:40px;
     list-style: none;
+    margin-right:20px;
+    & label {
+        padding: 30px;
+    }
 }
 
 .difficulty-container {
@@ -83,6 +86,10 @@ input {
     grid-template-columns: repeat(4, 1fr);
     gap:40px;
     list-style: none;
+    margin-right:45px;
+    & label {
+        padding: 20px 5px;
+    }
 }
 
 .category-container {
@@ -90,6 +97,10 @@ input {
     list-style: none;
     display:grid;
     grid-template-columns: repeat(3, 4fr);
+    margin-right:30px;
+    & label {
+        padding: 30px;
+    }
 }
 
 button {
@@ -102,12 +113,58 @@ button {
     cursor:pointer;
     box-shadow: 10px 5px 5px var(--color-primary);
     margin:20px;
+    &:disabled {
+        background-color:grey;
+        box-shadow: 10px 5px 5px (grey);
+        cursor:auto;
+    }
 }
 
-@media (max-width: 1024px) {
-
+@media (max-width: 640px) {
+h2 {
+    font-size:26px;
+    margin:15px;
 }
 
-@media (max-width: 600px) {
+.quiz-container{
+    max-width:100%;
+    & h3{
+        font-size:20px;
+        margin:15px;
+    }
+    & p{
+        font-size:16px;
+        margin:10px;
+    }
+    & .choice-container{
+        gap:15px;
+    }
+    & .questions-container-card, .difficulty-container, .category-container{
+        display:grid;
+        grid-template-columns: repeat(1, 1fr) ;
+        width:100%;
+        margin:0;
+        padding:0;
+        align-items: center;
+    }
+    & .question-card-home, .difficulty-card-home, .category-card-home{
+        width:90%;
+        max-width: 400px;
+        margin: 0 auto;
+        & label {
+            font-size:14px;
+            padding:20px 40px;
+        }
+        &:hover{
+            transform: none;
+        }
+    }
+    & .difficulties-container, .categories-container, .questions-container{
+        width:100%;
+    }
+}
 
+button {
+    font-size:14px;
+}
 }

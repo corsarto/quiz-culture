@@ -31,7 +31,6 @@ export default function Home() {
     const [selectedQuestions, setSelectedQuestions] = useState<number>(0);
     const questionsOptions = [5, 10, 15];
     
-
     const navigate = useNavigate();
 
     return (
