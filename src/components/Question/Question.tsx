@@ -51,11 +51,13 @@ export default function Question ({ selectedQuestions, category, difficulty }: Q
   
   const feedbackMessage = selectedAnswer === quiz.answer ? 'Bonne réponse!' : 'Mauvaise réponse.';
   const maxIndex = Math.min(selectedQuestions, data.quizzes.length) -1;
+
+  const currentQuestionsNumber = currentIndex + 1;
   
     return (
     <div className='question-container'>
       <div className='question-card'>
-        <h2 className='question-text' >Question: {quiz.question}</h2>
+        <h2 className='question-text' >Question {currentQuestionsNumber}: {quiz.question}</h2>
       </div>
       <ul className={`answer-option`}>
         {shuffledAnswers.map((answer, i) => (
