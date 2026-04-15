@@ -1,4 +1,5 @@
-import { useState,  useEffect } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useState,  useEffect} from 'react';
 import './question.scss';
 import EndScreen from '../../components/EndScreen/EndScreen';
 import type { QuestionProps }  from '../../types/index';
@@ -16,17 +17,30 @@ const fetchQuiz = async (selectedQuestions: number, category: string, difficulty
   };
 
 export default function Question ({ selectedQuestions, category, difficulty }: QuestionProps) {
+
+  const savedQuiz = localStorage.getItem('quiz');
   
   const { data, isLoading, error } = useQuery({
     queryKey: ['quiz', selectedQuestions, category, difficulty],
-    queryFn: () => fetchQuiz(selectedQuestions, category, difficulty),
+    queryFn: async () => {
+      if (savedQuiz) {
+        return JSON.parse(savedQuiz);
+      }
+      const freshData = await fetchQuiz(selectedQuestions, category, difficulty);
+      localStorage.setItem('quiz', JSON.stringify(freshData));
+      return freshData;
+    }
   });
 
   const [isValidated, setIsValidated] = useState(false);
   const [score, setScore] = useState(0);
   const [quizEnded, setQuizEnded] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState('');
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(Number(localStorage.getItem('currentIndex')) || 0);
+
+  useEffect(() => {
+    localStorage.setItem('currentIndex', String(currentIndex));
+  }, [currentIndex]);
   
   const quiz = data?.quizzes[currentIndex];
   
@@ -34,6 +48,13 @@ export default function Question ({ selectedQuestions, category, difficulty }: Q
 
   useEffect(() => {
     if (!quiz) return;
+
+    const savedShuffle = localStorage.getItem(`shuffle-${currentIndex}`);
+
+    if(savedShuffle) {
+      setShuffledAnswers(JSON.parse(savedShuffle));
+      return;
+    }
 
     const shuffleAnswers = (answers: string[]) => {
       const shuffled = [...answers];
@@ -43,8 +64,12 @@ export default function Question ({ selectedQuestions, category, difficulty }: Q
       }
       return shuffled;
     };
-    queueMicrotask(() =>setShuffledAnswers(shuffleAnswers([quiz.answer, ...quiz.badAnswers])));
-  }, [quiz]);
+
+    const newShuffle = shuffleAnswers([quiz.answer, ...quiz.badAnswers]);
+
+    setShuffledAnswers(newShuffle);
+    localStorage.setItem(`shuffle-${currentIndex}`, JSON.stringify(newShuffle));
+  }, [quiz, currentIndex]);
 
   if (isLoading) return <p>Chargement...</p>
   if (error) return <p>Erreur : {error.message}</p>

@@ -6,6 +6,9 @@ import './endscreen.scss';
 export default function EndScreen({ score, selectedQuestions, quizEnded }: EndScreenProps) {
     if (!quizEnded) return null;
      const endMessage = `Quiz terminé! Votre score final est de ${score} / ${selectedQuestions}.`;
+     const handleRestart = () => {
+        localStorage.clear();
+     };
     return (
         <div className='modal-overlay'>
             <div className='modal-end-screen'>
@@ -15,7 +18,11 @@ export default function EndScreen({ score, selectedQuestions, quizEnded }: EndSc
                     <p>Essaie encore !</p>
                 )}
                 {quizEnded && <p className='endmsg'>{endMessage}</p>}
-                {quizEnded && <Link to='/' ><button>Retour à l'acceuil</button></Link>}
+                {quizEnded && <Link to='/' >
+                    <button onClick={handleRestart}>
+                        Retour à l'acceuil
+                    </button>
+                </Link>}
             </div>
         </div>  
         

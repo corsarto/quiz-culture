@@ -6,8 +6,14 @@ import Error from './pages/Error/Error'
 import './styles/main.scss'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
+const queryClient = new QueryClient();
+
 export default function App() {
-  const queryClient = new QueryClient();
+  
+  const handleRestart = () => {
+        localStorage.clear();
+        queryClient.clear();
+     };
 
   return ( 
   <QueryClientProvider client={queryClient}>
@@ -15,7 +21,7 @@ export default function App() {
      <Router>
        <div className='app-container'>
          <header> 
-           <h1><Link to="/">GQuiz</Link></h1>
+           <h1><Link to="/" onClick={handleRestart}>GQuiz</Link></h1>
          </header>
          <main>
            <Routes>
