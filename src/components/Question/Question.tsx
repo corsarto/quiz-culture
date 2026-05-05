@@ -18,16 +18,18 @@ const fetchQuiz = async (selectedQuestions: number, category: string, difficulty
 
 export default function Question ({ selectedQuestions, category, difficulty }: QuestionProps) {
 
-  const savedQuiz = localStorage.getItem('quiz');
+  
+  const quizId = localStorage.getItem('quizId');
   
   const { data, isLoading, error } = useQuery({
-    queryKey: ['quiz', selectedQuestions, category, difficulty],
+    queryKey: ['quiz', quizId, selectedQuestions, category, difficulty],
     queryFn: async () => {
-      if (savedQuiz) {
-        return JSON.parse(savedQuiz);
+      const saved = localStorage.getItem(`quiz-${quizId}`);
+      if (saved) {
+        return JSON.parse(saved);
       }
       const freshData = await fetchQuiz(selectedQuestions, category, difficulty);
-      localStorage.setItem('quiz', JSON.stringify(freshData));
+      localStorage.setItem(`quiz-${quizId}`, JSON.stringify(freshData));
       return freshData;
     }
   });
@@ -49,7 +51,7 @@ export default function Question ({ selectedQuestions, category, difficulty }: Q
   useEffect(() => {
     if (!quiz) return;
 
-    const savedShuffle = localStorage.getItem(`shuffle-${currentIndex}`);
+    const savedShuffle = localStorage.getItem(`shuffle-${quizId}-${currentIndex}`);
 
     if(savedShuffle) {
       setShuffledAnswers(JSON.parse(savedShuffle));
@@ -68,7 +70,7 @@ export default function Question ({ selectedQuestions, category, difficulty }: Q
     const newShuffle = shuffleAnswers([quiz.answer, ...quiz.badAnswers]);
 
     setShuffledAnswers(newShuffle);
-    localStorage.setItem(`shuffle-${currentIndex}`, JSON.stringify(newShuffle));
+    localStorage.setItem(`shuffle-${quizId}-${currentIndex}`, JSON.stringify(newShuffle));
   }, [quiz, currentIndex]);
 
   if (isLoading) return <p>Chargement...</p>
@@ -109,16 +111,6 @@ export default function Question ({ selectedQuestions, category, difficulty }: Q
         ))}
       </ul>
       <div className='btn-container'>
-        <button className={`next-question-btn ${currentIndex >= maxIndex ? 'disabled-btn' : ''}`} onClick={() => {
-          if (currentIndex < maxIndex) {
-            setCurrentIndex(currentIndex + 1);
-            setSelectedAnswer('');
-            setIsValidated(false);
-          } 
-          }} disabled={currentIndex >= maxIndex} 
-        >
-          Next Question
-        </button>
         <button className='validate-btn' onClick={() => { 
           setIsValidated(true);
           if (selectedAnswer === quiz.answer) {
@@ -129,6 +121,16 @@ export default function Question ({ selectedQuestions, category, difficulty }: Q
           }
         }} disabled={isValidated}>
           Valider
+        </button>
+        <button className={`next-question-btn ${currentIndex >= maxIndex ? 'disabled-btn' : ''}`} onClick={() => {
+          if (currentIndex < maxIndex) {
+            setCurrentIndex(currentIndex + 1);
+            setSelectedAnswer('');
+            setIsValidated(false);
+          } 
+          }} disabled={currentIndex >= maxIndex} 
+        >
+          Suivant
         </button>
       </div>
       <div className='container-msg'>

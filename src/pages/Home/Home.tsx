@@ -103,8 +103,13 @@ export default function Home() {
                     </div>
                         <button
                             disabled={!selectedQuestions || !selectedCategory || !selectedDifficulty}
-                            onClick={() => navigate(`/quiz/${selectedQuestions}?category=${selectedCategory}&difficulty=${selectedDifficulty}`)}
-                        >
+                            onClick={() => {
+                                const newQuizId = crypto.randomUUID();
+                                localStorage.setItem('quizId', newQuizId);
+                                localStorage.removeItem('quiz');
+                                localStorage.removeItem('currentIndex');
+                                navigate(`/quiz/${selectedQuestions}?category=${selectedCategory}&difficulty=${selectedDifficulty}`)}
+                            }>
                             Lancer le quiz
                         </button>
                     </div>
